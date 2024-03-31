@@ -4,6 +4,12 @@ import cn.disy920.oks.annotation.Beta
 import cn.disy920.oks.message.chain.MessageChain
 import cn.disy920.oks.packet.api.friend.SendTempMsgPacket
 
+/**
+ * 代表一个陌生人，通常用于创建临时会话
+ * @param id 用户的QQ号
+ * @param nickName 用户的昵称
+ * @param bot 用户所对应的机器人
+ */
 class Stranger(
     override val id: Long,
     override val nickName: String,

@@ -82,7 +82,11 @@ class GroupMember(
         }
     }
 
-    private fun changeNameCard(nameCard: String) {
+    /**
+     * 修改群名片
+     * @param nameCard 新的群名片
+     */
+    fun changeNameCard(nameCard: String) {
         bot.getConnection().postMsg(SetMemberNameCardPacket(group.id, id, nameCard))
     }
 

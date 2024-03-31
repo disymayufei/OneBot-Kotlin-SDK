@@ -21,8 +21,4 @@ class At(val target: Long) : Message, Sendable, Receivable {
     override fun toString(): String {
         return "[At: $target]"
     }
-
-    fun getDisplay(): String {
-        TODO("尚未实现Display方法")
-    }
 }

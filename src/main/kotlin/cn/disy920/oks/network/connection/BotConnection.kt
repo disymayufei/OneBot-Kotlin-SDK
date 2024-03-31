@@ -105,7 +105,7 @@ interface BotConnection {
 
                             // 群聊消息
                             "group" -> {
-                                val group = Group(params.get("group_id").asLong())
+                                val group = Group(params.get("group_id").asLong(), bot)
                                 val member = GroupMember.parseJson(
                                     params.get("sender") as ObjectNode,
                                     group,
@@ -133,7 +133,7 @@ interface BotConnection {
                             // 群管理员变动事件
                             "group_admin" -> {
                                 val set = (params.get("sub_type").asText() == "set")
-                                val group = Group(params.get("group_id").asLong())
+                                val group = Group(params.get("group_id").asLong(), bot)
                                 val member = bot.getGroupMember(group, params.get("user_id").asLong(), false) ?: GroupMember.getEmptyGroupMember(group, params.get("user_id").asLong(), bot)
 
                                 if (set) {
@@ -164,7 +164,7 @@ interface BotConnection {
 
                             // 群成员减少事件
                             "group_decrease" -> {
-                                val group = Group(params.get("group_id").asLong())
+                                val group = Group(params.get("group_id").asLong(), bot)
                                 val member = bot.getGroupMember(group, params.get("user_id").asLong(), false) ?: GroupMember.getEmptyGroupMember(group, params.get("user_id").asLong(), bot)
                                 val type = when (params.get("sub_type").asText()) {
                                     "leave" -> {
@@ -195,7 +195,7 @@ interface BotConnection {
 
                             // 群成员增加事件
                             "group_increase" -> {
-                                val group = Group(params.get("group_id").asLong())
+                                val group = Group(params.get("group_id").asLong(), bot)
                                 val member = bot.getGroupMember(group, params.get("user_id").asLong(), false) ?: GroupMember.getEmptyGroupMember(group, params.get("user_id").asLong(), bot)
                                 val type = when (params.get("sub_type").asText()) {
                                     "approve" -> {
@@ -223,7 +223,7 @@ interface BotConnection {
 
                             // 群禁言事件
                             "group_ban" -> {
-                                val group = Group(params.get("group_id").asLong())
+                                val group = Group(params.get("group_id").asLong(), bot)
                                 val member = bot.getGroupMember(group, params.get("user_id").asLong(), false) ?: GroupMember.getEmptyGroupMember(group, params.get("user_id").asLong(), bot)
                                 OneBot.eventManager.callEvent(
                                     bot,
@@ -240,7 +240,7 @@ interface BotConnection {
 
                             // 群消息撤回事件
                             "group_recall" -> {
-                                val group = Group(params.get("group_id").asLong())
+                                val group = Group(params.get("group_id").asLong(), bot)
                                 val member = bot.getGroupMember(group, params.get("user_id").asLong(), false) ?: GroupMember.getEmptyGroupMember(group, params.get("user_id").asLong(), bot)
                                 OneBot.eventManager.callEvent(
                                     bot,
@@ -273,7 +273,7 @@ interface BotConnection {
                             "poke" -> {
                                 // 群聊戳一戳事件
                                 if (params.has("group_id")) {
-                                    val group = Group(params.get("group_id").asLong())
+                                    val group = Group(params.get("group_id").asLong(), bot)
                                     val member = bot.getGroupMember(group, params.get("user_id").asLong(), false) ?: GroupMember.getEmptyGroupMember(group, params.get("user_id").asLong(), bot)
                                     OneBot.eventManager.callEvent(
                                         bot,
@@ -326,7 +326,7 @@ interface BotConnection {
                             // 群请求事件
                             "group" -> {
                                 val stranger = Stranger.getEmptyStranger(bot, params.get("user_id").asLong())
-                                val group = Group(params.get("group_id").asLong())
+                                val group = Group(params.get("group_id").asLong(), bot)
                                 val type = when (params.get("sub_type").asText()) {
                                     "add" -> {
                                         GroupRequestEvent.Type.ADD
