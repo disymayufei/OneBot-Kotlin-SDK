@@ -59,7 +59,7 @@ class EventManager private constructor() {
             }
             catch (e: NoClassDefFoundError) {
                 logger.error(
-                    "Bot ${bot.id} has failed to register events for ${listener.javaClass} because ${e.message} does not exist."
+                    "机器人${bot.id}在注册事件:${listener.javaClass}时由于${e.message}不存在而无法继续注册!"
                 )
 
                 return ret
@@ -76,7 +76,7 @@ class EventManager private constructor() {
                 if (method.parameterTypes.size == 1) {
                     val checkClass: Class<*> = method.parameterTypes[0]
                     if (!Event::class.java.isAssignableFrom(checkClass)) {
-                        logger.error("Bot ${bot.id} attempted to register more than 1 event in EventHandler method signature \"${method.toGenericString()}\" in ${listener.javaClass}")
+                        logger.error("机器人${bot.id}尝试注册的监听器${listener.javaClass}中包含异常方法：\"${method.toGenericString()}\"，它的参数类型不是一个合法的事件！")
                         continue
                     }
                     else {
@@ -89,15 +89,15 @@ class EventManager private constructor() {
                         }
 
                         eventClass.getAnnotation(Deprecated::class.java)?.let {
-                            logger.warn("Bot ${bot.id} attempted to listen the event ${eventClass.simpleName} which is deprecated!")
+                            logger.warn("机器人${bot.id}正在监听一个过时的事件：${eventClass.simpleName}，请联系开发者进行修改！")
                         }
 
                         eventClass.getAnnotation(Beta::class.java)?.let {
-                            logger.warn("Bot ${bot.id} attempted to listen the event ${eventClass.simpleName} which is in beta stage!")
+                            logger.warn("机器人${bot.id}正在监听一个处于测试状态的事件：${eventClass.simpleName}，这意味着该事件只能在特定条件下被触发，或其尚未经过足够的测试！")
                         }
 
                         eventClass.getAnnotation(Undefined::class.java)?.let {
-                            logger.warn("Bot ${bot.id} attempted to listen the event ${eventClass.simpleName} which calling behavior is undefined!")
+                            logger.warn("机器人${bot.id}正在监听一个包含未定义行为的事件：${eventClass.simpleName}，这意味着该事件调用时的行为可能不会按照预期的情况发生！")
                         }
 
                         val executor = EventExecutor { eventListener, event ->
@@ -126,7 +126,7 @@ class EventManager private constructor() {
                     }
                 }
                 else {
-                    logger.error("Bot ${bot.id} attempted to register an invalid EventHandler method signature \"${method.toGenericString()}\" in ${listener.javaClass}")
+                    logger.error("机器人${bot.id}尝试注册的监听器${listener.javaClass}中包含一个异常方法: \"${method.toGenericString()}\"，该方法需要的参数数量不为1！")
                     continue
                 }
             }
@@ -134,7 +134,7 @@ class EventManager private constructor() {
             return ret
         }
         else {
-            throw IllegalListenerException("Bot ${bot.id} attempted to register an invalid event listener ${listener.javaClass} which is not the direct subclass of Listener.")
+            throw IllegalListenerException("机器人${bot.id}尝试注册一个不是Listener接口的直接子类的监听器: ${listener.javaClass}")
         }
     }
 
@@ -188,7 +188,7 @@ class EventManager private constructor() {
      */
     fun callEvent(bot: Bot, event: AbstractEvent) {
         if (bot != event.bot) {
-            throw EventException("Bot ${bot.id} attempted to call an event from another bot ${event.bot.id}")
+            throw EventException("机器人${bot.id}尝试调用来自另一个机器人:${event.bot.id}的事件，这种行为是不被允许的！")
         }
 
         allEventHandlers.entries.forEach {

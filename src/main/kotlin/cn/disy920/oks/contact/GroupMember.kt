@@ -109,7 +109,7 @@ class GroupMember(
      * 向该成员发送临时会话消息
      * @param messages 消息链
      * @see MessageChain
-     * @see Undefined
+     * @see Beta
      */
     @Beta("LLOneBot暂时不支持发送临时会话消息，仅限@disymayufei的fork版支持")
     override fun sendMessage(messages: MessageChain) {
