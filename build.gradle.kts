@@ -21,22 +21,24 @@ repositories {
 }
 
 group = "cn.disy920"
-version = "1.0.0"
+version = "1.0.6"
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlin_version")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:$kotlinx_coroutines_version")
+    implementation("org.yaml:snakeyaml:2.2")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.17.0")
     implementation("com.fasterxml.jackson.core:jackson-core:2.17.0")
     implementation("ch.qos.logback:logback-classic:$logback_version")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.17.0")
 }
 
 publishing {
     publications {
         create<MavenPublication>("mavenJava") {
-            groupId = "cn.disy920"
-            artifactId = "oks"
-            version = "1.0.0"
+            groupId = "cn.disy920.onebot"
+            artifactId = "okapi"
+            this.version = version
 
             from(components["java"])
 
